@@ -1,8 +1,7 @@
-import '@babel/polyfill'
 import jQuery from 'jquery'
 import Handlebars from 'handlebars'
 import { Router } from 'director/build/director'
-import { getTodo, addTodo } from './services'
+
 /*global jQuery, Handlebars, Router */
 jQuery(function ($) {
 	'use strict';
@@ -45,19 +44,17 @@ jQuery(function ($) {
 
 	var App = {
 		init: function () {
-			getTodo().then(res => {
-				this.todos = res.data;
-				this.todoTemplate = Handlebars.compile($('#todo-template').html());
-				this.footerTemplate = Handlebars.compile($('#footer-template').html());
-				this.bindEvents();
-				
-				new Router({
-					'/:filter': function (filter) {
-						this.filter = filter;
-						this.render();
-					}.bind(this)
-				}).init('/all');
-			});
+			this.todos = util.store('todos-jquery');
+			this.todoTemplate = Handlebars.compile($('#todo-template').html());
+			this.footerTemplate = Handlebars.compile($('#footer-template').html());
+			this.bindEvents();
+
+			new Router({
+				'/:filter': function (filter) {
+					this.filter = filter;
+					this.render();
+				}.bind(this)
+			}).init('/all');
 		},
 		bindEvents: function () {
 			$('#new-todo').on('keyup', this.create.bind(this));
@@ -146,17 +143,16 @@ jQuery(function ($) {
 			if (e.which !== ENTER_KEY || !val) {
 				return;
 			}
-			
-			addTodo({title: val, completed: false}).then(res => {
-				this.todos.push(res.data);
-				
-				$input.val('');
 
-				this.render();
+			this.todos.push({
+				id: util.uuid(),
+				title: val,
+				completed: false
 			});
 
-			
-			// this.init();
+			$input.val('');
+
+			this.render();
 		},
 		toggle: function (e) {
 			var i = this.indexFromEl(e.target);
