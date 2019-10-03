@@ -1,7 +1,8 @@
 import jQuery from 'jquery'
 import Handlebars from 'handlebars'
 import { Router } from 'director/build/director'
-
+import { getTodo } from './services'
+getTodo('a41d05d1-9c42-4772-948d-5c9472ad5a73').then(result=>console.log(result))
 /*global jQuery, Handlebars, Router */
 jQuery(function ($) {
 	'use strict';
