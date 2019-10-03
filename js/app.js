@@ -1,3 +1,4 @@
+import '@babel/polyfill'
 import jQuery from 'jquery'
 import Handlebars from 'handlebars'
 import { Router } from 'director/build/director'

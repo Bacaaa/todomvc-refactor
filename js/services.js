@@ -1,7 +1,8 @@
 import axios from "axios"
 
-export const getTodo = (id = '') => {
-    return axios.get(`http://localhost:3000/todos${!!id ? "/" + id : ""}`)
+export const getTodo = async (id = '') => {
+    const getTodo = await axios.get(`http://localhost:3000/todos${!!id ? "/" + id : ""}`);
+    return getTodo;
 }
 
 export const addTodo = data => {
