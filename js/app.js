@@ -2,7 +2,6 @@ import jQuery from 'jquery'
 import Handlebars from 'handlebars'
 import { Router } from 'director/build/director'
 import { getTodo } from './services'
-getTodo('a41d05d1-9c42-4772-948d-5c9472ad5a73').then(result=>console.log(result))
 /*global jQuery, Handlebars, Router */
 jQuery(function ($) {
 	'use strict';
@@ -45,17 +44,19 @@ jQuery(function ($) {
 
 	var App = {
 		init: function () {
-			this.todos = util.store('todos-jquery');
-			this.todoTemplate = Handlebars.compile($('#todo-template').html());
-			this.footerTemplate = Handlebars.compile($('#footer-template').html());
-			this.bindEvents();
-
-			new Router({
-				'/:filter': function (filter) {
-					this.filter = filter;
-					this.render();
-				}.bind(this)
-			}).init('/all');
+			getTodo().then(res => {
+				this.todos = res.data;
+				this.todoTemplate = Handlebars.compile($('#todo-template').html());
+				this.footerTemplate = Handlebars.compile($('#footer-template').html());
+				this.bindEvents();
+				
+				new Router({
+					'/:filter': function (filter) {
+						this.filter = filter;
+						this.render();
+					}.bind(this)
+				}).init('/all');
+			});
 		},
 		bindEvents: function () {
 			$('#new-todo').on('keyup', this.create.bind(this));
