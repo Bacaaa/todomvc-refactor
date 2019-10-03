@@ -1,4 +1,4 @@
-export const localStorage = {
+export const objLocalStorage = {
     set: function(namespace, data){
         return localStorage.setItem(namespace, JSON.stringify(data));
     },
