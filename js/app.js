@@ -4,6 +4,8 @@ import Handlebars from "handlebars"
 import { Router } from "director/build/director"
 import { util } from "./util"
 import { objLocalStorage } from "./localStorage"
+import { storageHTTP } from "./storageHTTP";
+import { storageLS } from "./storageLS";
 /*global jQuery, Handlebars, Router */
 jQuery(function($) {
     "use strict"
@@ -14,12 +16,13 @@ jQuery(function($) {
 
     var ENTER_KEY = 13
     var ESCAPE_KEY = 27
-
+	const PARAM = 'HTTP'
     const requestType = { http: true, localStorage: false }
 
+	const Storage =  PARAM === 'LS' ? storageLS : storageHTTP
     var App = {
         init: async function() {
-            this.todos = await util.getTodo("todos-jquery", requestType)
+            this.todos = await Storage.getTodo()
             this.todoTemplate = Handlebars.compile($("#todo-template").html())
             this.footerTemplate = Handlebars.compile($("#footer-template").html())
             this.bindEvents()
