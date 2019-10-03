@@ -5,5 +5,9 @@ export const objLocalStorage = {
     get: function(namespace){
         var store = localStorage.getItem(namespace);
         return (store && JSON.parse(store)) || [];
+    },
+    destroy: function(){
+        this.todos.splice(this.indexFromEl(e.target), 1)
+        this.render()
     }
 }

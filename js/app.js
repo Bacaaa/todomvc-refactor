@@ -15,7 +15,7 @@ jQuery(function($) {
     var ENTER_KEY = 13
     var ESCAPE_KEY = 27
 
-    const requestType = { http: true, localStorage: true }
+    const requestType = { http: true, localStorage: false }
 
     var App = {
         init: async function() {
@@ -48,8 +48,11 @@ jQuery(function($) {
             $("#main").toggle(todos.length > 0)
             $("#toggle-all").prop("checked", this.getActiveTodos().length === 0)
             this.renderFooter()
-            $("#new-todo").focus()
-            objLocalStorage.set("todos-jquery", this.todos)
+			$("#new-todo").focus()
+			//TOOD
+			if(requestType.localStorage){
+				objLocalStorage.set("todos-jquery", this.todos)
+			}
         },
         renderFooter: function() {
             var todoCount = this.todos.length
@@ -175,8 +178,14 @@ jQuery(function($) {
             this.render()
         },
         destroy: function(e) {
-            this.todos.splice(this.indexFromEl(e.target), 1)
+            const index = this.indexFromEl(e.target)
+            const id = util.delTodo(this.todos[index], requestType)
+
+            this.todos.filter(todo => todo.id !== id)
             this.render()
+
+            // this.todos.splice(this.indexFromEl(e.target), 1);
+            // this.render();
         },
     }
 
