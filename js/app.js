@@ -1,3 +1,6 @@
+import jQuery from "jquery";
+import Handlebars from "Handlebars"
+import { Router } from "director/build/director"
 /*global jQuery, Handlebars, Router */
 jQuery(function ($) {
 	'use strict';
