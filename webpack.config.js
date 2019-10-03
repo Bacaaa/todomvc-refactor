@@ -6,7 +6,6 @@ module.exports = {
     javascript: [
       'webpack-dev-server/client?http://localhost:' + devServerPort,
     ],
-    typescript: "./src/app.ts",
     html: "./index.html",
   },
   output: {
@@ -20,10 +19,6 @@ module.exports = {
       {
         test: /\.html$/,
         loader: "file?name=[name].[ext]",
-      },
-      {
-        test: /\.ts$/,
-        loader: 'ts-loader'
       }
     ],
   },
