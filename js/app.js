@@ -1,7 +1,7 @@
 import jQuery from 'jquery'
 import Handlebars from 'handlebars'
 import { Router } from 'director/build/director'
-import { getTodo } from './services'
+import { getTodo, addTodo } from './services'
 /*global jQuery, Handlebars, Router */
 jQuery(function ($) {
 	'use strict';
@@ -145,16 +145,17 @@ jQuery(function ($) {
 			if (e.which !== ENTER_KEY || !val) {
 				return;
 			}
+			
+			addTodo({title: val, completed: false}).then(res => {
+				this.todos.push(res.data);
+				
+				$input.val('');
 
-			this.todos.push({
-				id: util.uuid(),
-				title: val,
-				completed: false
+				this.render();
 			});
 
-			$input.val('');
-
-			this.render();
+			
+			// this.init();
 		},
 		toggle: function (e) {
 			var i = this.indexFromEl(e.target);
