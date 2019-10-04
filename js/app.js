@@ -3,7 +3,7 @@ import jQuery from "jquery"
 import Handlebars from "handlebars"
 import { Router } from "director/build/director"
 import { util } from "./util"
-import { objLocalStorage } from "./localStorage"
+import { objLocalStorage } from "./objLocalStorage"
 import { storageHTTP } from "./storageHTTP";
 import { storageLS } from "./storageLS";
 /*global jQuery, Handlebars, Router */
@@ -50,10 +50,11 @@ jQuery(function($) {
             $("#todo-list").html(this.todoTemplate(todos))
             $("#main").toggle(todos.length > 0)
             $("#toggle-all").prop("checked", this.getActiveTodos().length === 0)
-            this.renderFooter()
+			this.renderFooter()
+			console.log('adsad')
 			$("#new-todo").focus()
 			//TOOD
-			if(requestType.localStorage){
+			if(PARAM === "LS"){
 				objLocalStorage.set("todos-jquery", this.todos)
 			}
         },
@@ -180,11 +181,11 @@ jQuery(function($) {
 
             this.render()
         },
-        destroy: function(e) {
+        destroy: async function(e) {
             const index = this.indexFromEl(e.target)
-            const id = util.delTodo(this.todos[index], requestType)
+            const id = await Storage.delTodo(this.todos[index])
 
-            this.todos.filter(todo => todo.id !== id)
+			this.todos.splice(this.indexFromEl(e.target), 1);
             this.render()
 
             // this.todos.splice(this.indexFromEl(e.target), 1);
